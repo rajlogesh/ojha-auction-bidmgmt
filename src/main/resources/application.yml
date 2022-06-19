@@ -1,0 +1,69 @@
+server:
+  port: 8083
+ 
+spring:
+  jmx:
+    enabled: true
+  application:
+    name: ojha-auction-bidmgmt
+  profiles:
+    active:
+    - local
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "*" 
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ojha-auction-bidmgmt
+---
+
+spring:
+  profiles: local
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ojha_bids
+#      username: myNormalUser
+#      password: abc123
+
+#  rabbitmq:
+#    host: ec2-13-234-30-175.ap-south-1.compute.amazonaws.com
+#    port: 5672
+#    username: guest
+#    password: guest
+
+---
+
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      host: ec2-13-233-160-158.ap-south-1.compute.amazonaws.com
+      port: 27017
+      database: ojha_stocks
+      username: myNormalUser
+      password: abc123
+
+  rabbitmq:
+    host: ec2-13-234-30-175.ap-south-1.compute.amazonaws.com
+    port: 5672
+    username: guest
+    password: guest
+
+logback:
+  ampq:
+    host: ec2-13-234-30-175.ap-south-1.compute.amazonaws.com
+    port: 5672
+    username: guest
+    password: guest
+    exchange:
+      name: ojha_stocks_logstash
+    routing:
+      key: ojha-stock-service
